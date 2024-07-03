@@ -2,5 +2,5 @@ using UnityEngine;
 
 public interface ILine
 {
-    Vector3[] GetPositions();
+    Vector3[] Positions { get; }
 }

@@ -13,6 +13,6 @@ namespace Services
         /// <summary>
         /// 顶点发生变化
         /// </summary>
-        AfterVertexChange,
+        AfterDraggableVertexChange,
     }
 }

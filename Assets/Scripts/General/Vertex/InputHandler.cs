@@ -2,11 +2,11 @@ using UnityEngine;
 
 public class InputHandler : MonoBehaviour
 {
-    private VertexManager vertexManager;
+    private DraggableVertexManager vertexManager;
 
     private void Awake()
     {
-        vertexManager = GetComponentInParent<VertexManager>();
+        vertexManager = GetComponentInParent<DraggableVertexManager>();
     }
 
     private void Update()

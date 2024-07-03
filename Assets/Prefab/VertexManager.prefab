@@ -56,7 +56,7 @@ LineRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: e5c192cb51d0b34479fc45261470fc0d, type: 2}
+  - {fileID: 2100000, guid: 23e144227ce662e4cae5d96449a4ffc2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -76,7 +76,7 @@ LineRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: -10
   m_Positions: []
   m_Parameters:
     serializedVersion: 3
@@ -159,7 +159,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4722729850511170065}
-  - component: {fileID: 67041745817403987}
+  - component: {fileID: 7182092303005655962}
   - component: {fileID: 4683934613758749973}
   m_Layer: 0
   m_Name: VertexManager
@@ -184,7 +184,7 @@ Transform:
   - {fileID: 1847181429096075293}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &67041745817403987
+--- !u!114 &7182092303005655962
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -196,10 +196,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 955aad190db0ee9479b8f8b5b5e45036, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectedDistance: 0.2
-  selectedIndex: 0
-  color_selected: {r: 1, g: 0, b: 0, a: 1}
-  color_notSelected: {r: 0.058736563, g: 1, b: 0, a: 1}
+  dirty: 0
 --- !u!114 &4683934613758749973
 MonoBehaviour:
   m_ObjectHideFlags: 0
