@@ -8,7 +8,7 @@ public class VertexManager : MonoBehaviour, ILine
 {
     protected IObjectManager objectManager;
     protected IEventSystem eventSystem;
-
+    public MyObject MyObject { get ; protected set; }
     protected readonly List<Vertex> vertices = new();
 
     public bool dirty;
@@ -32,29 +32,39 @@ public class VertexManager : MonoBehaviour, ILine
         objectManager = ServiceLocator.Get<IObjectManager>();
         eventSystem = ServiceLocator.Get<IEventSystem>();
         dirty = true;
+        MyObject = GetComponent<MyObject>();
+        MyObject.OnActivate += OnActivate;
+        MyObject.OnRecycle += OnRecycle;
     }
 
     protected virtual void Update()
     {
-
+        
     }
 
-    protected virtual void OnDestroy()
+    protected virtual void OnActivate()
+    {
+        dirty = true;
+    }
+
+    protected virtual void OnRecycle()
     {
         ObjectPoolUtility.RecycleMyObjects(gameObject);
+        vertices.Clear();
     }
 
-    public virtual void GenerateVertex()
+    public Vertex GenerateVertex(Vector3 position)
     {
-        IMyObject obj = objectManager.Activate("Vertex", Vertex.MouseToWorld(0f), Vector3.zero, transform);
-        vertices.Add(obj.Transform.GetComponent<Vertex>());
+        Vertex vertex = objectManager.Activate("Vertex", position, Vector3.zero, transform).Transform.GetComponent<Vertex>();
+        vertices.Add(vertex);
         dirty = true;
+        return vertex;
     }
     public void DeleteVertex(int index)
     {
         if (index >= 0 && index < vertices.Count)
         {
-            vertices[index].GetComponent<MyObject>().Recycle();
+            vertices[index].MyObject.Recycle();
             vertices.RemoveAt(index);
             dirty = true;
         }
@@ -69,8 +79,15 @@ public class VertexManager : MonoBehaviour, ILine
     }
     public void ClearVertices()
     {
-        vertices.Clear();
-        dirty = true;
+        if(vertices.Count > 0)
+        {
+            for (int i = 0; i < vertices.Count; i++)
+            {
+                vertices[i].MyObject.Recycle();
+            }
+            vertices.Clear();
+            dirty = true;
+        }
     }
 
     protected void UpdatePositions()

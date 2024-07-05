@@ -14,5 +14,13 @@ namespace Services
         /// 顶点发生变化
         /// </summary>
         AfterDraggableVertexChange,
+        /// <summary>
+        /// 演示开始
+        /// </summary>
+        AfterLaunch,
+        /// <summary>
+        /// 演示停止
+        /// </summary>
+        AfterReset,
     }
 }

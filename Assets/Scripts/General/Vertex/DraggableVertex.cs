@@ -15,10 +15,30 @@ public class DraggableVertex : Vertex, IDragHandler
         draggable = true;
     }
 
-    private void OnEnable()
+    protected override void OnEnable()
     {
+        base.OnEnable();
         if (transform.parent != null)
             area = transform.parent.GetComponentInChildren<Area2D>();
+        eventSystem.AddListener(EEvent.AfterLaunch, AfterLaunch);
+        eventSystem.AddListener(EEvent.AfterReset, AfterReset);
+    }
+
+    protected override void OnDisable()
+    {
+        base.OnDisable();
+        eventSystem.RemoveListener(EEvent.AfterLaunch, AfterLaunch);
+        eventSystem.RemoveListener(EEvent.AfterReset, AfterReset);
+    }
+
+    private void AfterLaunch()
+    {
+        draggable = false;
+    }
+
+    private void AfterReset()
+    {
+        draggable = true;
     }
 
     public void OnDrag(PointerEventData eventData)

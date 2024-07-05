@@ -82,6 +82,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 1311950062811141414, guid: 68444e50ad25e9e4487d928544da893b, type: 3}
+      propertyPath: m_SortingOrder
+      value: -20
+      objectReference: {fileID: 0}
+    - target: {fileID: 1311950062811141414, guid: 68444e50ad25e9e4487d928544da893b, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: e5c192cb51d0b34479fc45261470fc0d, type: 2}
@@ -140,6 +144,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4169068057870839637, guid: 68444e50ad25e9e4487d928544da893b, type: 3}
       insertIndex: -1
       addedObject: {fileID: 4436631887979024606}
+    - targetCorrespondingSourceObject: {fileID: 4169068057870839637, guid: 68444e50ad25e9e4487d928544da893b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7419256009347751063}
   m_SourcePrefab: {fileID: 100100000, guid: 68444e50ad25e9e4487d928544da893b, type: 3}
 --- !u!4 &2417742777979344907 stripped
 Transform:
@@ -168,3 +175,15 @@ MonoBehaviour:
   selectedIndex: 0
   color_selected: {r: 1, g: 0, b: 0.7951088, a: 1}
   color_notSelected: {r: 0, g: 0.07041359, b: 1, a: 1}
+--- !u!114 &7419256009347751063
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6475205080041794895}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a1e96c7a5efd0f46a827eec27809345, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

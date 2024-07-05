@@ -2,11 +2,11 @@ using UnityEngine;
 
 namespace MyTimer
 {
-    public class BeizierLerp : ILerp<Vector3>
+    public class BezierLerp : ILerp<Vector3>
     {
         public Vector3[] points;
 
-        public static Vector3 BezierLerp(Vector3[] points, float percent)
+        public static Vector3 Lerp(Vector3[] points, float percent)
         {
             int count = points.Length;
             switch (count)
@@ -22,7 +22,7 @@ namespace MyTimer
                     {
                         newPoints[i] = Vector3.Lerp(points[i], points[i + 1], percent);
                     }
-                    return BezierLerp(newPoints, percent);
+                    return Lerp(newPoints, percent);
             }
         }
 
@@ -44,7 +44,7 @@ namespace MyTimer
                     {
                         newPoints[i] = Vector3.Lerp(points[i], points[i + 1], percent);
                     }
-                    return BezierLerp(newPoints, percent);
+                    return Lerp(newPoints, percent);
             }
         }
     }

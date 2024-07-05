@@ -1,5 +1,4 @@
 using Services;
-using Services.ObjectPools;
 using UnityEngine;
 
 public class DraggableVertexManager : VertexManager
@@ -12,7 +11,7 @@ public class DraggableVertexManager : VertexManager
     private int selectedIndex;
     [SerializeField]
     private Color color_selected;
-    [SerializeField]
+    [SerializeField] 
     private Color color_notSelected;
 
     protected override void Awake()
@@ -22,15 +21,17 @@ public class DraggableVertexManager : VertexManager
         DraggableVertex[] temp = GetComponentsInChildren<DraggableVertex>();
         vertices.AddRange(temp);
         selectedIndex = -1;
+
+        eventSystem.AddListener(EEvent.AfterDraggableVertexChange, AfterVertexChange);
+        eventSystem.AddListener(EEvent.AfterLaunch, AfterLaunch);
+        eventSystem.AddListener(EEvent.AfterReset, AfterReset);
     }
 
-    protected virtual void OnEnable()
-    {
-        eventSystem.AddListener(EEvent.AfterDraggableVertexChange, AfterVertexChange);
-    }
-    protected virtual void OnDisable()
+    protected void OnDestroy()
     {
         eventSystem.RemoveListener(EEvent.AfterDraggableVertexChange, AfterVertexChange);
+        eventSystem.RemoveListener(EEvent.AfterLaunch, AfterLaunch);
+        eventSystem.RemoveListener(EEvent.AfterReset, AfterReset);
     }
 
     protected override void Update()
@@ -45,14 +46,16 @@ public class DraggableVertexManager : VertexManager
         dirty = true;
     }
 
-    public override void GenerateVertex()
+    public Vertex GenerateVertex()
     {
         Vector3 p = Vertex.MouseToWorld(0f);
-        if(!area.Contains(p))
-            return;
-        IMyObject obj = objectManager.Activate("DraggableVertex", p, Vector3.zero, transform);
-        vertices.Add(obj.Transform.GetComponent<Vertex>());
+        if (!area.Contains(p))
+            return null;
+
+        Vertex vertex = objectManager.Activate("DraggableVertex", p, Vector3.zero, transform).Transform.GetComponent<Vertex>();
+        vertices.Add(vertex);
         dirty = true;
+        return vertex;
     }
     public void DeleteVertex()
     {
@@ -89,5 +92,16 @@ public class DraggableVertexManager : VertexManager
         {
             vertices[i].SetColor(i == selectedIndex ? color_selected : color_notSelected);
         }
+    }
+
+    private void AfterLaunch()
+    {
+        selectedIndex = 1;
+        enabled = false;
+    }
+
+    private void AfterReset()
+    {
+        enabled = true;
     }
 }

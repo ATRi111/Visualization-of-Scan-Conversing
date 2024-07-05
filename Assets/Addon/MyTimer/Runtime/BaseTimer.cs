@@ -11,7 +11,7 @@ namespace MyTimer
             AfterCompelete += MyOnComplete;
         }
 
-        private void MyOnComplete(TValue _)
+        protected virtual void MyOnComplete(TValue _)
         {
             (Target, Origin) = (Origin, Target);
             Restart(true);
@@ -29,7 +29,7 @@ namespace MyTimer
             AfterCompelete += MyOnComplete;
         }
 
-        private void MyOnComplete(TValue _)
+        protected virtual void MyOnComplete(TValue _)
         {
             Restart(true);
         }
