@@ -1,5 +1,6 @@
 using Services;
 using Services.ObjectPools;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class GridGenerator : MonoBehaviour
@@ -8,6 +9,24 @@ public class GridGenerator : MonoBehaviour
     private IObjectManager objectManager;
     [SerializeField]
     private int extend;
+    public readonly Dictionary<Vector2Int, Grid> grids = new();
+
+    public Grid this[int x,int y]
+    {
+        get
+        {
+            grids.TryGetValue(new Vector2Int(x, y), out Grid grid);
+            return grid;
+        }
+    }
+    public Grid this[Vector2Int v]
+    {
+        get
+        {
+            grids.TryGetValue(v, out Grid grid);
+            return grid;
+        }
+    }
 
     private void Awake()
     {
@@ -23,11 +42,13 @@ public class GridGenerator : MonoBehaviour
     private void GenerateGrids()
     {
         area.ShrinkToInt(out int xMin, out int xMax, out int yMin, out int yMax);
+        grids.Clear();
         for (int i = xMin - extend; i <= xMax + extend; i++) 
         {
             for (int j = yMin - extend; j <= yMax + extend; j++) 
             {
-                objectManager.Activate("Grid", new Vector3(i, j), Vector3.zero, transform);
+                IMyObject obj = objectManager.Activate("Grid", new Vector3(i, j), Vector3.zero, transform);
+                grids.Add(new Vector2Int(i, j), obj.Transform.GetComponent<Grid>());
             }
         }
     }

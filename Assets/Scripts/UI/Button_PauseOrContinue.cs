@@ -4,7 +4,7 @@ using UnityEngine;
 public class Button_PauseOrContinue : ButtonBase
 {
     [SerializeField]
-    private BezierCurveController controller;
+    private PaintController controller;
 
     private bool paused;
     public bool Paused

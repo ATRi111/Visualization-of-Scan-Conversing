@@ -4,7 +4,7 @@ using UnityEngine;
 public class Slider_Interval : SliderBase<float>
 {
     [SerializeField]
-    private BezierCurveController controller;
+    private PaintController controller;
     [SerializeField]
     private TextMeshProUGUI tmp;
 
