@@ -21,7 +21,7 @@ public class ActiveEdgeContainer
     public bool MoveUp(List<Vector2Int> ret)
     {
         currentY++;
-
+        Debug.Log(currentY);
         for (int i = 0;i < edges.Count;i++)
         {
             if (currentY > edges[i].yMax)
@@ -40,6 +40,6 @@ public class ActiveEdgeContainer
         {
             ret.Add(new Vector2Int(edges[i].MoveUp(), currentY));
         }
-        return false;
+        return true;
     }
 }

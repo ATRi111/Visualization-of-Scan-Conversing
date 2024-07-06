@@ -60,22 +60,20 @@ public abstract class PaintController : MonoBehaviour
     protected abstract ScanTimer CreateTimer();
 }
 
-[Serializable]
-public abstract class ScanTimer : Metronome
+public class ScanTimer : Metronome
 {
     protected PaintController controller;
     protected GridGenerator gridGenerator;
-    [SerializeField]
     protected ColoringTimer coloring;
 
     public virtual void Initialize(float duration, PaintController controller, bool start = true)
     {
         base.Initialize(duration, start);
         this.controller = controller;
-        gridGenerator = controller.GetComponentInChildren<GridGenerator>();
+        gridGenerator = controller.vertexManager.GetComponentInChildren<GridGenerator>();
         BeforePause += MyBeforePause;
         coloring = new ColoringTimer();
-        coloring.AfterCompelete += AfterColoring;
+        coloring.AfterColoring += AfterColoring;
     }
 
     protected virtual void MyBeforePause(float _)
@@ -83,25 +81,17 @@ public abstract class ScanTimer : Metronome
         coloring.Paused = true;
     }
 
-    protected override void MyOnComplete(float _)
-    {
-        
-    }
-
-    protected void AfterColoring(float _)
+    protected void AfterColoring()
     {
         Paused = false;
     }
 
     public void ClearAll()
     {
-        foreach (Grid grid in gridGenerator.grids.Values)
-        {
-            grid.Color = Color.white;
-        }
+        gridGenerator.ResetColor();
     }
 }
-[Serializable]
+
 public class ColoringTimer : Metronome
 {
     private List<Vector2Int> positions;
@@ -109,6 +99,7 @@ public class ColoringTimer : Metronome
     private GridGenerator gridGenerator;
     private IMyObject gridMark;
     private int index;
+    public Action AfterColoring;
 
     public void Initialize(GridGenerator gridGenerator, List<Vector2Int> positions, List<Color> colors, float duration, bool start = true)
     {
@@ -118,13 +109,15 @@ public class ColoringTimer : Metronome
         this.gridGenerator = gridGenerator;
         index = 0;
         gridMark = ServiceLocator.Get<IObjectManager>().Activate("GridMark", new Vector3(-114, -514), Vector3.zero);
+        AfterColoring = null;
     }
 
     protected override void MyOnComplete(float _)
     {
-        if (index > positions.Count)
+        if (index >= positions.Count)
         {
             gridMark?.Recycle();
+            AfterColoring?.Invoke();
             return;
         }
 

@@ -48,7 +48,7 @@ public class GridGenerator : MonoBehaviour
         {
             for (int j = yMin - extend; j <= yMax + extend; j++) 
             {
-                IMyObject obj = objectManager.Activate("Grid", new Vector3(i, j), Vector3.zero, transform);
+                IMyObject obj = objectManager.Activate("Grid", new Vector3(i, j, transform.position.z), Vector3.zero, transform);
                 grids.Add(new Vector2Int(i, j), obj.Transform.GetComponent<Grid>());
             }
         }

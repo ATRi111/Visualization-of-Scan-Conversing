@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,6 +10,7 @@ public class XScanlineController : PaintController
     }
 }
 
+[Serializable]
 public class XScanlineTimer : ScanTimer
 {
     enum EState
@@ -18,6 +20,7 @@ public class XScanlineTimer : ScanTimer
         ClearIntersection   //清除交点
     }
 
+    [SerializeField]
     private XScanlineAlgorithm algorithm;
     private EState state;
 
@@ -25,11 +28,12 @@ public class XScanlineTimer : ScanTimer
     {
         base.Initialize(duration, controller, start);
         algorithm = new XScanlineAlgorithm(controller.vertexManager.Positions);
-        state = EState.ClearIntersection;
+        state = EState.DrawIntersection;
     }
 
     protected override void MyOnComplete(float _)
     {
+        Debug.Log(state);
         switch(state)
         {
             case EState.DrawIntersection:
@@ -58,10 +62,10 @@ public class XScanlineTimer : ScanTimer
                         colors.Add(Color.red);
                     }
                 }
-                coloring.Initialize(gridGenerator, points, colors, Duration);
                 state = EState.ClearIntersection;
                 base.MyOnComplete(_);
                 Paused = true;
+                coloring.Initialize(gridGenerator, points, colors, Duration);
                 break;
             case EState.ClearIntersection:
                 for (int i = 0; i < algorithm.current.Count; i++)
