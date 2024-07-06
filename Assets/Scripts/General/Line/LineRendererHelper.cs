@@ -1,4 +1,4 @@
-using System;
+using Tools;
 using UnityEngine;
 
 [RequireComponent(typeof(LineRenderer))]
@@ -29,7 +29,10 @@ public class LineRendererHelper : MonoBehaviour
         else
         {
             Vector3[] copy = new Vector3[positions.Length];
-            Array.Copy(positions, copy, positions.Length);
+            for (int i = 0; i < copy.Length; i++)
+            {
+                copy[i] = positions[i].ResetZ(transform.position.z);
+            }
             lineRenderer.positionCount = copy.Length;
             lineRenderer.SetPositions(copy);
             lineRenderer.enabled = true;
