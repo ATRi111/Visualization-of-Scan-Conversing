@@ -9,7 +9,7 @@ public class GridGenerator : MonoBehaviour
     private IObjectManager objectManager;
     [SerializeField]
     private int extend;
-    public readonly Dictionary<Vector2Int, Grid> grids = new();
+    public Dictionary<Vector2Int, Grid> grids;
 
     public Grid this[int x,int y]
     {
@@ -32,6 +32,7 @@ public class GridGenerator : MonoBehaviour
     {
         area = GetComponent<Area2D>();
         objectManager = ServiceLocator.Get<IObjectManager>();
+        grids = new Dictionary<Vector2Int, Grid>();
     }
 
     private void Start()
@@ -50,6 +51,14 @@ public class GridGenerator : MonoBehaviour
                 IMyObject obj = objectManager.Activate("Grid", new Vector3(i, j), Vector3.zero, transform);
                 grids.Add(new Vector2Int(i, j), obj.Transform.GetComponent<Grid>());
             }
+        }
+    }
+
+    public void ResetColor()
+    {
+        foreach(Grid grid in grids.Values)
+        {
+            grid.Color = Color.white;
         }
     }
 }

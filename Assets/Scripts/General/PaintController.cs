@@ -6,16 +6,14 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PaintController : MonoBehaviour
+public abstract class PaintController : MonoBehaviour
 {
     protected IEventSystem eventSystem;
     public DraggableVertexManager vertexManager;
     [HideInInspector]
     public GridGenerator gridGenerator;
 
-    public Color color_answer;
-    public Color color_mark;
-
+    [Range(0.1f,1f)]
     public float interval = 0.2f;
 
     [SerializeField]
@@ -24,8 +22,8 @@ public class PaintController : MonoBehaviour
     protected virtual void Awake()
     {
         eventSystem = ServiceLocator.Get<IEventSystem>();
-        timer = new ScanTimer();
         gridGenerator = vertexManager.GetComponentInChildren<GridGenerator>();
+        timer = CreateTimer();
     }
 
     private void OnEnable()
@@ -33,7 +31,6 @@ public class PaintController : MonoBehaviour
         eventSystem.AddListener(EEvent.AfterLaunch, AfterLaunch);
         eventSystem.AddListener(EEvent.AfterReset, AfterReset);
     }
-
     private void OnDisable()
     {
         eventSystem.RemoveListener(EEvent.AfterLaunch, AfterLaunch);
@@ -44,7 +41,6 @@ public class PaintController : MonoBehaviour
     {
         timer.Initialize(interval, this);
     }
-
     public void AfterReset()
     {
         timer.Paused = true;
@@ -55,35 +51,36 @@ public class PaintController : MonoBehaviour
     {
         timer.Paused = true;
     }
-
     public void Continue()
     {
         if(!timer.Completed)
             timer.Paused = false;
     }
+
+    protected abstract ScanTimer CreateTimer();
 }
 
 [Serializable]
-public class ScanTimer : Metronome
+public abstract class ScanTimer : Metronome
 {
     protected PaintController controller;
     protected GridGenerator gridGenerator;
     [SerializeField]
-    private PaintLineTimer line;
+    protected ColoringTimer coloring;
 
-    public virtual void Initialize(float duration, PaintController controller)
+    public virtual void Initialize(float duration, PaintController controller, bool start = true)
     {
-        base.Initialize(duration);
+        base.Initialize(duration, start);
         this.controller = controller;
         gridGenerator = controller.GetComponentInChildren<GridGenerator>();
         BeforePause += MyBeforePause;
-        line = new PaintLineTimer();
-        line.AfterCompelete += AfterPaintLine;
+        coloring = new ColoringTimer();
+        coloring.AfterCompelete += AfterColoring;
     }
 
     protected virtual void MyBeforePause(float _)
     {
-        line.Paused = true;
+        coloring.Paused = true;
     }
 
     protected override void MyOnComplete(float _)
@@ -91,9 +88,9 @@ public class ScanTimer : Metronome
         
     }
 
-    protected void AfterPaintLine(float _)
+    protected void AfterColoring(float _)
     {
-        ForceComplete();
+        Paused = false;
     }
 
     public void ClearAll()
@@ -105,7 +102,7 @@ public class ScanTimer : Metronome
     }
 }
 [Serializable]
-public class PaintLineTimer : Metronome
+public class ColoringTimer : Metronome
 {
     private List<Vector2Int> positions;
     private List<Color> colors;
