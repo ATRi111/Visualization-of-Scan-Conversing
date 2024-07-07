@@ -1,18 +1,32 @@
 using System;
 using UnityEngine;
 
+[Serializable]
 public class OrderedEdge : IComparable<OrderedEdge>
 {
+    public static OrderedEdge TryCreateOrderedEdge(Vector3 from,Vector3 to)
+    {
+        if (from.y > to.y)
+            (from, to) = (to, from);
+        int yMin = Mathf.CeilToInt(from.x);
+        int yMax = Mathf.FloorToInt(to.x) - 1;
+        if (yMax < yMin)
+            return null;
+        float deltaX = (to.x - from.x) / (to.y - from.y);
+        float currentX = from.x - deltaX;
+        return new OrderedEdge(yMax, currentX, deltaX);
+    }
+
     public int yMax;
 
-    private float currentX;
-    internal float deltaX;
+    public float currentX;
+    public float deltaX;
 
-    internal OrderedEdge(Vector3 a, Vector3 b)
+    private OrderedEdge(int yMax, float currentX, float deltaX)
     {
-        deltaX = (b.x - a.x) / (b.y - a.y);
-        currentX = a.x - deltaX;
-        yMax = Mathf.FloorToInt(b.y) - 1;
+        this.yMax = yMax;
+        this.currentX = currentX;
+        this.deltaX = deltaX;
     }
 
     /// <summary>

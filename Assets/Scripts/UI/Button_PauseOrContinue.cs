@@ -4,7 +4,8 @@ using UnityEngine;
 public class Button_PauseOrContinue : ButtonBase
 {
     [SerializeField]
-    private PaintController controller;
+    private GameObject obj_controller;
+    private IPaintController controller;
 
     private bool paused;
     public bool Paused
@@ -26,6 +27,7 @@ public class Button_PauseOrContinue : ButtonBase
     protected override void Awake()
     {
         base.Awake();
+        controller = obj_controller.GetComponent<IPaintController>();
         Button.interactable = false;
         paused = true;
         Paused = false;

@@ -1,12 +1,12 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
 public class XScanlineAlgorithm
 {
     public List<Vector2Int> current;    //当前交点
-    private readonly OrderedEdgeContainer orderedEdges;
-    private readonly ActiveEdgeContainer activeEdges;
+    public OrderedEdgeContainer orderedEdges;
+    public ActiveEdgeContainer activeEdges;
 
     public XScanlineAlgorithm(Vector3[] positions)
     {

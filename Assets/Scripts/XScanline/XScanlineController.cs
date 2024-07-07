@@ -2,18 +2,15 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class XScanlineController : PaintController
+public class XScanlineController : PaintController<XScanlineTimer>
 {
-    protected override ScanTimer CreateTimer()
-    {
-        return new XScanlineTimer();
-    }
+
 }
 
 [Serializable]
 public class XScanlineTimer : ScanTimer
 {
-    enum EState
+    public enum EState
     {
         DrawIntersection,   //绘制交点
         Coloring,           //多边形内区域填色
@@ -22,18 +19,18 @@ public class XScanlineTimer : ScanTimer
 
     [SerializeField]
     private XScanlineAlgorithm algorithm;
+    [SerializeField]
     private EState state;
 
-    public override void Initialize(float duration, PaintController controller, bool start = true)
+    public override void Initialize(float duration, Vector3[] positions, GridGenerator gridGenerator, bool start = true)
     {
-        base.Initialize(duration, controller, start);
-        algorithm = new XScanlineAlgorithm(controller.vertexManager.Positions);
+        base.Initialize(duration, positions, gridGenerator, start);
+        algorithm = new XScanlineAlgorithm(positions);
         state = EState.DrawIntersection;
     }
 
     protected override void MyOnComplete(float _)
     {
-        Debug.Log(state);
         switch(state)
         {
             case EState.DrawIntersection:

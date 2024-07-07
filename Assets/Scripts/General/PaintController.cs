@@ -6,24 +6,22 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class PaintController : MonoBehaviour
+public abstract class PaintController<T> : MonoBehaviour, IPaintController where T : ScanTimer, new()
 {
     protected IEventSystem eventSystem;
     public DraggableVertexManager vertexManager;
     [HideInInspector]
     public GridGenerator gridGenerator;
 
-    [Range(0.1f,1f)]
-    public float interval = 0.2f;
+    public float Interval { get; set; }
 
-    [SerializeField]
-    protected ScanTimer timer;
+    public T timer;
 
     protected virtual void Awake()
     {
         eventSystem = ServiceLocator.Get<IEventSystem>();
         gridGenerator = vertexManager.GetComponentInChildren<GridGenerator>();
-        timer = CreateTimer();
+        timer = new T();
     }
 
     private void OnEnable()
@@ -37,11 +35,11 @@ public abstract class PaintController : MonoBehaviour
         eventSystem.RemoveListener(EEvent.AfterReset, AfterReset);
     }
 
-    public void AfterLaunch()
+    private void AfterLaunch()
     {
-        timer.Initialize(interval, this);
+        timer.Initialize(Interval, vertexManager.Positions, gridGenerator);
     }
-    public void AfterReset()
+    private void AfterReset()
     {
         timer.Paused = true;
         timer.ClearAll();
@@ -53,24 +51,22 @@ public abstract class PaintController : MonoBehaviour
     }
     public void Continue()
     {
-        if(!timer.Completed)
+        if (!timer.Completed)
             timer.Paused = false;
     }
-
-    protected abstract ScanTimer CreateTimer();
 }
 
+[Serializable]
 public class ScanTimer : Metronome
 {
-    protected PaintController controller;
     protected GridGenerator gridGenerator;
+    [SerializeField]
     protected ColoringTimer coloring;
 
-    public virtual void Initialize(float duration, PaintController controller, bool start = true)
+    public virtual void Initialize(float duration, Vector3[] positions , GridGenerator gridGenerator, bool start = true)
     {
         base.Initialize(duration, start);
-        this.controller = controller;
-        gridGenerator = controller.vertexManager.GetComponentInChildren<GridGenerator>();
+        this.gridGenerator = gridGenerator;
         BeforePause += MyBeforePause;
         coloring = new ColoringTimer();
         coloring.AfterColoring += AfterColoring;

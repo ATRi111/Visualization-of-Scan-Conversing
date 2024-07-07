@@ -308,7 +308,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ede1423b9c2495499a97b230c5682c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  controller: {fileID: 0}
+  obj_controller: {fileID: 1802257609}
 --- !u!114 &93356533
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1273,7 +1273,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1054b3f32244dce40bedca1d7046416e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  controller: {fileID: 1802257611}
+  obj_controller: {fileID: 1802257609}
   tmp: {fileID: 1861434099}
 --- !u!1 &1449680745
 GameObject:
@@ -1908,7 +1908,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   vertexManager: {fileID: 1855943521}
   gridGenerator: {fileID: 0}
-  interval: 0.2
+  timer:
+    paused: 1
+    completed: 0
+    algorithm:
+      current: []
+      orderedEdges:
+        yMin: 0
+        yMax: 0
+      activeEdges:
+        currentY: 0
+    state: 0
 --- !u!1001 &1855943520
 PrefabInstance:
   m_ObjectHideFlags: 0

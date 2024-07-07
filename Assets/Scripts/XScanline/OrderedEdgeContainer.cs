@@ -2,12 +2,13 @@ using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 
+[System.Serializable]
 public class OrderedEdgeContainer
 {
     private readonly Dictionary<int, List<OrderedEdge>> edges = new();
-    internal int yMin, yMax;
+    public int yMin, yMax;
 
-    internal OrderedEdgeContainer(Vector3[] positions)
+    public OrderedEdgeContainer(Vector3[] positions)
     {
         yMin = int.MaxValue;
         yMax = int.MinValue;
@@ -18,24 +19,21 @@ public class OrderedEdgeContainer
             to = positions[(i + 1) % positions.Length];
             yMin = Mathf.Min(yMin, Mathf.CeilToInt(from.y));
             yMax = Mathf.Max(yMax, Mathf.FloorToInt(from.y));
-            if (from.y > to.y)
-                (from, to) = (to, from);
-            if (from.y != to.y)
-            {
-                OrderedEdge edge = new(from, to);
+
+            OrderedEdge edge = OrderedEdge.TryCreateOrderedEdge(from, to);
+            if (edge != null)
                 Add(Mathf.CeilToInt(from.y), edge);
-            }
         }
     }
 
-    internal void Add(int yMin, OrderedEdge edge)
+    public void Add(int yMin, OrderedEdge edge)
     {
         if (!edges.ContainsKey(yMin))
             edges.Add(yMin, new List<OrderedEdge>());
         edges[yMin].Add(edge);
     }
 
-    internal void GetCurrentEdges(int y, List<OrderedEdge> ret)
+    public void GetCurrentEdges(int y, List<OrderedEdge> ret)
     {
         if (edges.ContainsKey(y))
         {

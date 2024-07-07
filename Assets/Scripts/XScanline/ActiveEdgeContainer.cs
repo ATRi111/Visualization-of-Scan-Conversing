@@ -1,10 +1,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
 public class ActiveEdgeContainer
 {
-    private readonly List<OrderedEdge> edges;
-    private readonly OrderedEdgeContainer orderedEdgeContainer;
+    [SerializeField]
+    private List<OrderedEdge> edges;
+    private OrderedEdgeContainer orderedEdgeContainer;
     public int currentY;
 
     public ActiveEdgeContainer(OrderedEdgeContainer orderedEdgeContainer)
@@ -21,7 +23,6 @@ public class ActiveEdgeContainer
     public bool MoveUp(List<Vector2Int> ret)
     {
         currentY++;
-        Debug.Log(currentY);
         for (int i = 0;i < edges.Count;i++)
         {
             if (currentY > edges[i].yMax)
