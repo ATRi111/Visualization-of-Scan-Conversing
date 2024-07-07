@@ -3,7 +3,7 @@ using UnityEditor;
 using UnityEngine;
 
 [CustomEditor(typeof(XScanlineController))]
-public class XScanlineControllerEditor : AutoEditor
+public class XScanlineControllerEditor : PaintControllerEditor
 {
     [AutoProperty]
     public SerializedProperty timer;
@@ -17,6 +17,7 @@ public class XScanlineControllerEditor : AutoEditor
 
     protected override void MyOnInspectorGUI()
     {
+        base.MyOnInspectorGUI();
         timerEditor.OnInspectorGUI();
     }
 }

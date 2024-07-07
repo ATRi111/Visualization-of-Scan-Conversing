@@ -35,11 +35,14 @@ public class ActiveEdgeContainer
         if (edges.Count == 0)
             return false;
 
-        edges.Sort();
-
         for (int i = 0; i < edges.Count; i++)
         {
-            ret.Add(new Vector2Int(edges[i].MoveUp(), currentY));
+            edges[i].MoveUp();
+        }
+        edges.Sort();
+        for (int i = 0; i < edges.Count; i++)
+        {
+            ret.Add(new Vector2Int(Mathf.RoundToInt(edges[i].currentX), currentY));
         }
         return true;
     }

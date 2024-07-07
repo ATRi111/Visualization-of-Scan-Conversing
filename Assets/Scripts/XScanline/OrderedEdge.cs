@@ -4,38 +4,38 @@ using UnityEngine;
 [Serializable]
 public class OrderedEdge : IComparable<OrderedEdge>
 {
-    public static OrderedEdge TryCreateOrderedEdge(Vector3 from,Vector3 to)
+    public static OrderedEdge TryCreateOrderedEdge(Vector3 from, Vector3 to)
     {
         if (from.y > to.y)
             (from, to) = (to, from);
-        int yMin = Mathf.CeilToInt(from.x);
-        int yMax = Mathf.FloorToInt(to.x) - 1;
-        if (yMax < yMin)
+        int yMin = Mathf.RoundToInt(from.y);
+        int yMax = Mathf.RoundToInt(to.y);
+        if (yMax == yMin)
             return null;
         float deltaX = (to.x - from.x) / (to.y - from.y);
         float currentX = from.x - deltaX;
-        return new OrderedEdge(yMax, currentX, deltaX);
+        return new OrderedEdge(yMin, yMax - 1, currentX, deltaX);   //-1恰好实现下闭上开
     }
 
+    public int yMin;
     public int yMax;
-
     public float currentX;
     public float deltaX;
 
-    private OrderedEdge(int yMax, float currentX, float deltaX)
+    private OrderedEdge(int yMin,int yMax, float currentX, float deltaX)
     {
+        this.yMin = yMin;
         this.yMax = yMax;
         this.currentX = currentX;
         this.deltaX = deltaX;
     }
 
     /// <summary>
-    /// 使扫描线上移，然后返回交点的x分量
+    /// 使扫描线上移
     /// </summary>
-    public int MoveUp()
+    public void MoveUp()
     {
         currentX += deltaX;
-        return Mathf.RoundToInt(currentX);
     }
 
     public int CompareTo(OrderedEdge other)

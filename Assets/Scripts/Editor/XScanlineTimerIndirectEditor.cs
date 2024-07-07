@@ -17,8 +17,8 @@ public class XScanlineTimerIndirectEditor : TimerIndirectEditor
     {
         base.MyOnInspectorGUI();
         EditorGUI.BeginDisabledGroup(true);
-        algorithm.PropertyField("算法过程");
         state.EnumField<XScanlineTimer.EState>("当前步骤");
+        algorithm.PropertyField("算法过程");
         EditorGUI.EndDisabledGroup();
     }
 }

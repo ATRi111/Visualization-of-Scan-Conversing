@@ -13,6 +13,10 @@ public class Slider_Interval : SliderBase<float>
     {
         base.Awake();
         controller = obj_controller.GetComponent<IPaintController>();
+    }
+
+    private void Start()
+    {
         Slider.value = DataToValue(controller.Interval);
     }
 

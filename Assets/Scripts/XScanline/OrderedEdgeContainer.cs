@@ -22,7 +22,7 @@ public class OrderedEdgeContainer
 
             OrderedEdge edge = OrderedEdge.TryCreateOrderedEdge(from, to);
             if (edge != null)
-                Add(Mathf.CeilToInt(from.y), edge);
+                Add(edge.yMin, edge);
         }
     }
 

@@ -181,7 +181,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 10
+  orthographic size: 12
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -206,7 +206,7 @@ Transform:
   m_GameObject: {fileID: 50279567}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -10}
+  m_LocalPosition: {x: 8, y: 0, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -535,11 +535,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 594229747088163460, guid: 25e00820905132b41b28679fada050d1, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -12.09
+      value: -3.87
       objectReference: {fileID: 0}
     - target: {fileID: 594229747088163460, guid: 25e00820905132b41b28679fada050d1, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -6.3
       objectReference: {fileID: 0}
     - target: {fileID: 594229747088163460, guid: 25e00820905132b41b28679fada050d1, type: 3}
       propertyPath: m_LocalPosition.z
@@ -783,11 +783,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 594229747088163460, guid: 25e00820905132b41b28679fada050d1, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -7.51
+      value: 0.71000004
       objectReference: {fileID: 0}
     - target: {fileID: 594229747088163460, guid: 25e00820905132b41b28679fada050d1, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.3
+      value: 5.2
       objectReference: {fileID: 0}
     - target: {fileID: 594229747088163460, guid: 25e00820905132b41b28679fada050d1, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1118,7 +1118,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 594229747088163460, guid: 25e00820905132b41b28679fada050d1, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -3.67
+      value: 7.2
       objectReference: {fileID: 0}
     - target: {fileID: 594229747088163460, guid: 25e00820905132b41b28679fada050d1, type: 3}
       propertyPath: m_LocalPosition.y
@@ -1908,6 +1908,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   vertexManager: {fileID: 1855943521}
   gridGenerator: {fileID: 0}
+  interval_init: 0.2
   timer:
     paused: 1
     completed: 0
@@ -1917,6 +1918,7 @@ MonoBehaviour:
         yMin: 0
         yMax: 0
       activeEdges:
+        edges: []
         currentY: 0
     state: 0
 --- !u!1001 &1855943520
@@ -1969,23 +1971,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5722785291874490930, guid: 7e799479554bf5b478d9f1de9e00f38d, type: 3}
       propertyPath: size.x
-      value: 18
+      value: 23
       objectReference: {fileID: 0}
     - target: {fileID: 5722785291874490930, guid: 7e799479554bf5b478d9f1de9e00f38d, type: 3}
       propertyPath: size.y
-      value: 18
+      value: 23
       objectReference: {fileID: 0}
     - target: {fileID: 6475205080041794895, guid: 7e799479554bf5b478d9f1de9e00f38d, type: 3}
       propertyPath: m_Name
       value: DraggableVertexManager
-      objectReference: {fileID: 0}
-    - target: {fileID: 6741098312727476151, guid: 7e799479554bf5b478d9f1de9e00f38d, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -6
-      objectReference: {fileID: 0}
-    - target: {fileID: 6741098312727476151, guid: 7e799479554bf5b478d9f1de9e00f38d, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

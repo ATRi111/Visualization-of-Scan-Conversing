@@ -12,7 +12,8 @@ public abstract class PaintController<T> : MonoBehaviour, IPaintController where
     public DraggableVertexManager vertexManager;
     [HideInInspector]
     public GridGenerator gridGenerator;
-
+    [SerializeField]
+    private float interval_init;
     public float Interval { get; set; }
 
     public T timer;
@@ -22,6 +23,7 @@ public abstract class PaintController<T> : MonoBehaviour, IPaintController where
         eventSystem = ServiceLocator.Get<IEventSystem>();
         gridGenerator = vertexManager.GetComponentInChildren<GridGenerator>();
         timer = new T();
+        Interval = interval_init;
     }
 
     private void OnEnable()
@@ -68,8 +70,10 @@ public class ScanTimer : Metronome
         base.Initialize(duration, start);
         this.gridGenerator = gridGenerator;
         BeforePause += MyBeforePause;
-        coloring = new ColoringTimer();
-        coloring.AfterColoring += AfterColoring;
+        coloring = new ColoringTimer
+        {
+            AfterColoring = AfterColoring
+        };
     }
 
     protected virtual void MyBeforePause(float _)
@@ -85,6 +89,8 @@ public class ScanTimer : Metronome
     public void ClearAll()
     {
         gridGenerator.ResetColor();
+        coloring.Clear();
+        coloring.Paused = true;
     }
 }
 
@@ -105,7 +111,6 @@ public class ColoringTimer : Metronome
         this.gridGenerator = gridGenerator;
         index = 0;
         gridMark = ServiceLocator.Get<IObjectManager>().Activate("GridMark", new Vector3(-114, -514), Vector3.zero);
-        AfterColoring = null;
     }
 
     protected override void MyOnComplete(float _)
@@ -122,5 +127,10 @@ public class ColoringTimer : Metronome
         gridGenerator[v].Color = colors[index];
         index++;
         base.MyOnComplete(_);
+    }
+
+    public void Clear()
+    {
+        gridMark?.Recycle();
     }
 }
