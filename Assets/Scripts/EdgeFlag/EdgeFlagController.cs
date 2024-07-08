@@ -31,13 +31,13 @@ public class EdgeFlagTimer : ScanTimer
         }
         else
         {
-            bool finished = algorithm.MoveUp();
-            coloring.Initialize(gridGenerator, algorithm.currentLine, algorithm.currentColors, Duration);
-            if (!finished)
+            bool unfinished = algorithm.MoveUp();
+            if (unfinished)
             {
                 base.MyOnComplete(_);
                 Paused = true;
             }
+            coloring.Initialize(gridGenerator, algorithm.currentLine, algorithm.currentColors, Duration);
         }
     }
 }

@@ -21,16 +21,17 @@ public class EdgeFlagAlgorithm
         currentColors = new();
         xMin = yMin = int.MaxValue;
         xMax = yMax = int.MinValue;
-        currentY = yMin - 1;
         for (int i = 0; i < positions.Length; i++)
         {
-            xMin = Mathf.Min(xMin, Mathf.FloorToInt(positions[i].x));
-            xMax = Mathf.Max(xMax,Mathf.CeilToInt(positions[i].x));
-            yMin = Mathf.Min(yMin, Mathf.CeilToInt(positions[i].y));
-            yMax = Mathf.Max(yMax, Mathf.CeilToInt(positions[i].y));
+            xMin = Mathf.Min(xMin, Mathf.RoundToInt(positions[i].x));
+            xMax = Mathf.Max(xMax,Mathf.RoundToInt(positions[i].x));   
+            yMin = Mathf.Min(yMin, Mathf.RoundToInt(positions[i].y));
+            yMax = Mathf.Max(yMax, Mathf.RoundToInt(positions[i].y));
             Discrete(positions[i], positions[(i + 1) % positions.Length]);
         }
-        foreach(Vector2Int v in colorDict.Keys)
+        yMax--;
+        currentY = yMin - 1;
+        foreach (Vector2Int v in colorDict.Keys)
         {
             discreted.Add(v);
         }
@@ -50,7 +51,7 @@ public class EdgeFlagAlgorithm
         OrderedEdge edge = OrderedEdge.TryCreateOrderedEdge(from, to);
         if (edge == null)
             return;
-        for (int y = edge.yMin; y <= edge.yMax; y++)
+        for (int y = edge.yMin; y <= edge.yMax; y++)    //下闭上开
         {
             edge.MoveUp();
             Vector2Int v = new(edge.CurrentX, y);
@@ -68,15 +69,17 @@ public class EdgeFlagAlgorithm
     {
         bool flag = false;
         currentY++;
+        currentLine.Clear();
+        currentColors.Clear();
         for (int x = xMin; x <= xMax; x++)
         {
             Vector2Int v = new(x, currentY);
-            if (colorDict[v] == Color.blue)
+            if (colorDict.ContainsKey(v) && colorDict[v] == Color.blue)
                 flag = !flag;
-            colorDict[v] = flag ? Color.red : Color.white;
+            colorDict[v] = flag ? Color.red : Color.white;  //左闭右开
             currentLine.Add(v);
             currentColors.Add(colorDict[v]);
         }
-        return currentY <= yMax;
+        return currentY < yMax;
     }
 }
