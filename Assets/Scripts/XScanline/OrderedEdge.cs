@@ -13,7 +13,7 @@ public class OrderedEdge : IComparable<OrderedEdge>
         if (yMax == yMin)
             return null;
         float deltaX = (to.x - from.x) / (to.y - from.y);
-        float currentX = from.x - deltaX;
+        float currentX = deltaX * (yMin - from.y - 1) + from.x; 
         return new OrderedEdge(yMin, yMax - 1, currentX, deltaX);   //-1恰好实现下闭上开
     }
 
