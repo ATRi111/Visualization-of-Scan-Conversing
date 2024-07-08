@@ -4,22 +4,38 @@ using UnityEngine;
 [System.Serializable]
 public class EdgeFlagAlgorithm
 {
-    public int left, down, right, up;
-    public List<Vector2Int> discreted;
+    public int xMin, yMin, xMax, yMax;
+
+    public Dictionary<Vector2Int, Color> colorDict;
+
     public List<Vector2Int> currentLine;
     public List<Color> currentColors;
-
+    public int currentY;
+    
     public EdgeFlagAlgorithm(Vector3[] positions)
     {
-        left = down = int.MaxValue;
-        right = up = int.MinValue;
+        colorDict = new();
+        currentLine = new();
+        currentColors = new();
+        xMin = yMin = int.MaxValue;
+        xMax = yMax = int.MinValue;
+        currentY = yMin - 1;
         for (int i = 0; i < positions.Length; i++)
         {
-            left = Mathf.Min(left, Mathf.FloorToInt(positions[i].x));
-            right = Mathf.Max(right,Mathf.CeilToInt(positions[i].x));
-            down = Mathf.Min(down, Mathf.CeilToInt(positions[i].y));
-            up = Mathf.Max(up, Mathf.CeilToInt(positions[i].y));
+            xMin = Mathf.Min(xMin, Mathf.FloorToInt(positions[i].x));
+            xMax = Mathf.Max(xMax,Mathf.CeilToInt(positions[i].x));
+            yMin = Mathf.Min(yMin, Mathf.CeilToInt(positions[i].y));
+            yMax = Mathf.Max(yMax, Mathf.CeilToInt(positions[i].y));
             Discrete(positions[i], positions[(i + 1) % positions.Length]);
+        }
+        for (int x = xMin;x <= xMax;x++)
+        {
+            for (int y = yMin; y <= yMax; y++)
+            {
+                Vector2Int v = new(x, y);
+                if (!colorDict.ContainsKey(v))
+                    colorDict.Add(v, Color.white);
+            }
         }
     }
 
@@ -31,7 +47,30 @@ public class EdgeFlagAlgorithm
         for (int y = edge.yMin; y <= edge.yMax; y++)
         {
             edge.MoveUp();
-            discreted.Add(new Vector2Int(edge.CurrentX, y));
+            Vector2Int v = new(edge.CurrentX, y);
+            if (!colorDict.ContainsKey(v))
+                colorDict.Add(v, Color.blue);
+            else if (colorDict[v] == Color.blue)
+                colorDict[v] = Color.white;
+            else
+                colorDict[v] = Color.blue;
         }
+    }
+
+    //令y增加，然后计算当前行各个点是否需要填色
+    public bool MoveUp()
+    {
+        bool flag = false;
+        currentY++;
+        for (int x = xMin; x <= xMax; x++)
+        {
+            Vector2Int v = new(x, currentY);
+            if (colorDict[v] == Color.blue)
+                flag = !flag;
+            colorDict[v] = flag ? Color.red : Color.white;
+            currentLine.Add(v);
+            currentColors.Add(colorDict[v]);
+        }
+        return currentY <= yMax;
     }
 }
