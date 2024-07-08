@@ -42,7 +42,7 @@ public class ActiveEdgeContainer
         edges.Sort();
         for (int i = 0; i < edges.Count; i++)
         {
-            ret.Add(new Vector2Int(Mathf.RoundToInt(edges[i].currentX), currentY));
+            ret.Add(new Vector2Int(edges[i].CurrentX, currentY));
         }
         return true;
     }

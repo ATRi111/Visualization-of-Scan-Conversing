@@ -19,7 +19,8 @@ public class OrderedEdge : IComparable<OrderedEdge>
 
     public int yMin;
     public int yMax;
-    public float currentX;
+    private float currentX;
+    public int CurrentX => Mathf.RoundToInt(currentX);
     public float deltaX;
 
     private OrderedEdge(int yMin,int yMax, float currentX, float deltaX)
