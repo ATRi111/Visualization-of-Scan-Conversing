@@ -7,6 +7,7 @@ public class EdgeFlagAlgorithm
     public int xMin, yMin, xMax, yMax;
 
     public Dictionary<Vector2Int, Color> colorDict;
+    public List<Vector2Int> discreted;
 
     public List<Vector2Int> currentLine;
     public List<Color> currentColors;
@@ -15,6 +16,7 @@ public class EdgeFlagAlgorithm
     public EdgeFlagAlgorithm(Vector3[] positions)
     {
         colorDict = new();
+        discreted = new();
         currentLine = new();
         currentColors = new();
         xMin = yMin = int.MaxValue;
@@ -27,6 +29,10 @@ public class EdgeFlagAlgorithm
             yMin = Mathf.Min(yMin, Mathf.CeilToInt(positions[i].y));
             yMax = Mathf.Max(yMax, Mathf.CeilToInt(positions[i].y));
             Discrete(positions[i], positions[(i + 1) % positions.Length]);
+        }
+        foreach(Vector2Int v in colorDict.Keys)
+        {
+            discreted.Add(v);
         }
         for (int x = xMin;x <= xMax;x++)
         {

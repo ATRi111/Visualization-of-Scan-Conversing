@@ -1,6 +1,5 @@
 using EditorExtend;
 using UnityEditor;
-using UnityEngine;
 
 [CustomEditor(typeof(XScanlineController))]
 public class XScanlineControllerEditor : PaintControllerEditor
@@ -12,7 +11,7 @@ public class XScanlineControllerEditor : PaintControllerEditor
     protected override void OnEnable()
     {
         base.OnEnable();
-        timerEditor = new XScanlineTimerIndirectEditor(timer, (target as XScanlineController).timer as XScanlineTimer, "计时器");    
+        timerEditor = new XScanlineTimerIndirectEditor(timer, (target as XScanlineController).timer, "计时器");    
     }
 
     protected override void MyOnInspectorGUI()

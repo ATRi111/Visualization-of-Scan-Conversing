@@ -69,7 +69,7 @@ public class XScanlineTimer : ScanTimer
                 {
                     Vector2Int v = algorithm.current[i];
                     if (gridGenerator[v].Color == Color.blue)
-                        gridGenerator[algorithm.current[i]].Color = Color.white;
+                        gridGenerator[v].Color = Color.white;
                 }
                 state = EState.DrawIntersection;
                 base.MyOnComplete(_);
