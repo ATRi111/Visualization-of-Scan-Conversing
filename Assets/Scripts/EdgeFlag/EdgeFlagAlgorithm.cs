@@ -31,10 +31,6 @@ public class EdgeFlagAlgorithm
         }
         yMax--;
         currentY = yMin - 1;
-        foreach (Vector2Int v in colorDict.Keys)
-        {
-            discreted.Add(v);
-        }
         for (int x = xMin;x <= xMax;x++)
         {
             for (int y = yMin; y <= yMax; y++)
@@ -42,6 +38,8 @@ public class EdgeFlagAlgorithm
                 Vector2Int v = new(x, y);
                 if (!colorDict.ContainsKey(v))
                     colorDict.Add(v, Color.white);
+                else if(colorDict[v] == Color.blue)
+                    discreted.Add(v);
             }
         }
     }
@@ -51,10 +49,10 @@ public class EdgeFlagAlgorithm
         OrderedEdge edge = OrderedEdge.TryCreateOrderedEdge(from, to);
         if (edge == null)
             return;
-        for (int y = edge.yMin; y <= edge.yMax; y++)    //下闭上开
+        for(int y = edge.yMin; y <= edge.yMax; y++)   //下闭上开
         {
-            edge.MoveUp();
-            Vector2Int v = new(edge.CurrentX, y);
+            edge.MoveUp(); 
+            Vector2Int v = new(edge.CurrentX, y); 
             if (!colorDict.ContainsKey(v))
                 colorDict.Add(v, Color.blue);
             else if (colorDict[v] == Color.blue)

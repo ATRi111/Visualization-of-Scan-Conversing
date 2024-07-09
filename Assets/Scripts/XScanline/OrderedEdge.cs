@@ -6,13 +6,19 @@ public class OrderedEdge : IComparable<OrderedEdge>
 {
     public static OrderedEdge TryCreateOrderedEdge(Vector3 from, Vector3 to)
     {
+        Vector2Int a = new(Mathf.RoundToInt(from.x), Mathf.RoundToInt(from.y));
+        Vector2Int b = new(Mathf.RoundToInt(to.x), Mathf.RoundToInt(to.y));
+        return TryCreateOrderedEdge(a,b);
+    }
+    public static OrderedEdge TryCreateOrderedEdge(Vector2Int from, Vector2Int to)
+    {
         if (from.y > to.y)
             (from, to) = (to, from);
-        int yMin = Mathf.RoundToInt(from.y);
-        int yMax = Mathf.RoundToInt(to.y);
+        int yMin = from.y;
+        int yMax = to.y;
         if (yMax == yMin)
             return null;
-        float deltaX = (to.x - from.x) / (to.y - from.y);
+        float deltaX = (to.x - from.x) / (float)(to.y - from.y);
         float currentX = deltaX * (yMin - from.y - 1) + from.x; 
         return new OrderedEdge(yMin, yMax - 1, currentX, deltaX);   //-1恰好实现下闭上开
     }
@@ -32,7 +38,7 @@ public class OrderedEdge : IComparable<OrderedEdge>
     }
 
     /// <summary>
-    /// 使扫描线上移
+    /// 使扫描线上移,更新x的值
     /// </summary>
     public void MoveUp()
     {

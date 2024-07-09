@@ -22,6 +22,7 @@ public class DraggableVertex : Vertex, IDragHandler
             area = transform.parent.GetComponentInChildren<Area2D>();
         eventSystem.AddListener(EEvent.AfterLaunch, AfterLaunch);
         eventSystem.AddListener(EEvent.AfterReset, AfterReset);
+        Align();
     }
 
     protected override void OnDisable()
@@ -46,7 +47,8 @@ public class DraggableVertex : Vertex, IDragHandler
         if(!draggable)
             return;
         transform.position = MouseToWorld(transform.position.z);
-        if(area != null)
+        Align();
+        if (area != null)
             transform.position = area.Restrict(transform.position);
         eventSystem.Invoke(EEvent.AfterDraggableVertexChange);
     }
