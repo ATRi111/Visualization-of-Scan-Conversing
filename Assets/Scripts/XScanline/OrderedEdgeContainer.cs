@@ -17,8 +17,8 @@ public class OrderedEdgeContainer
         {
             from = positions[i];
             to = positions[(i + 1) % positions.Length];
-            yMin = Mathf.Min(yMin, Mathf.CeilToInt(from.y));
-            yMax = Mathf.Max(yMax, Mathf.FloorToInt(from.y));
+            yMin = Mathf.Min(yMin, Mathf.RoundToInt(from.y));
+            yMax = Mathf.Max(yMax, Mathf.RoundToInt(from.y));
 
             OrderedEdge edge = OrderedEdge.TryCreateOrderedEdge(from, to);
             if (edge != null)

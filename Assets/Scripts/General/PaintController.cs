@@ -18,12 +18,15 @@ public abstract class PaintController<T> : MonoBehaviour, IPaintController where
 
     public T timer;
 
+    private bool paused_main;   //true表示被暂停的是timer，false表示被暂停的是timer.coloring
+
     protected virtual void Awake()
     {
         eventSystem = ServiceLocator.Get<IEventSystem>();
         gridGenerator = vertexManager.GetComponentInChildren<GridGenerator>();
         timer = new T();
         Interval = interval_init;
+        paused_main = true;
     }
 
     private void OnEnable()
@@ -49,12 +52,23 @@ public abstract class PaintController<T> : MonoBehaviour, IPaintController where
 
     public void Pause()
     {
-        timer.Paused = true;
+        if(!timer.Paused && timer.coloring.Paused)
+        {
+            timer.Paused = true;
+            paused_main = true;
+        }
+        else if(timer.Paused && !timer.coloring.Paused)
+        {
+            timer.coloring.Paused = true;
+            paused_main = false;
+        }
     }
     public void Continue()
     {
-        if (!timer.Completed)
+        if(paused_main)
             timer.Paused = false;
+        else
+            timer.coloring.Paused = false;
     }
 }
 
@@ -62,8 +76,7 @@ public abstract class PaintController<T> : MonoBehaviour, IPaintController where
 public class ScanTimer : Metronome
 {
     protected GridGenerator gridGenerator;
-    [SerializeField]
-    protected ColoringTimer coloring;
+    public ColoringTimer coloring;
 
     public virtual void Initialize(float duration, Vector3[] positions , GridGenerator gridGenerator, bool start = true)
     {
