@@ -78,6 +78,6 @@ public class EdgeFlagAlgorithm
             currentLine.Add(v);
             currentColors.Add(colorDict[v]);
         }
-        return currentY < yMax;
+        return currentY <= yMax;
     }
 }
