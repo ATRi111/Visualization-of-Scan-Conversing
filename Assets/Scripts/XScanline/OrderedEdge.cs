@@ -26,7 +26,14 @@ public class OrderedEdge : IComparable<OrderedEdge>
     public int yMin;
     public int yMax;
     private float currentX;
-    public int CurrentX => Mathf.RoundToInt(currentX);
+    public int CurrentX
+    {
+        get
+        {
+            double temp = Math.Round(currentX, MidpointRounding.AwayFromZero);  //四舍五入
+            return Mathf.RoundToInt((float)temp);
+        }
+    }
     public float deltaX;
 
     private OrderedEdge(int yMin,int yMax, float currentX, float deltaX)
